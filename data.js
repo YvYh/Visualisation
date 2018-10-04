@@ -22,7 +22,7 @@ var data = {
 var largeur = 1000;
 var hauteur = 500;
 var paper = Raphael("inselberg", largeur, hauteur);
-paper.rect(0, 0, largeur, hauteur).attr({
+paper.rect(10, 10, largeur, hauteur).attr({
     fill: "#eaf9f8"
 });
 
@@ -37,6 +37,8 @@ var disColonne = largGraph / nbColonnes;
 var lineStart = marge * 3;
 var lineLength = hautGraph - marge * 2;
 var lineEnd = lineStart + lineLength;
+
+//colours
 //var colour = ["f7999f","#c9f799","#99f7f1","#e799f7"];
 var colour = [];
 for (var i=0; i<nbSeries;i++){
@@ -44,23 +46,25 @@ for (var i=0; i<nbSeries;i++){
     colour.push(`hsla(${teinte},40%,90%,50%)`);
 }
 
+//colonnes
 for (i = 1; i < nbColonnes+1; i++) {
     var lineX = disColonne*i;
     //paper.path("M" + lineX + "," + lineStart + "L" + lineX + "," + lineEnd);
     paper.path(`M${lineX},${lineStart}L${lineX},${lineEnd}`);
-    paper.text(lineX-2,marge,data.colonnes[i-1]).attr({"font-size": "12px"});
+    paper.text(lineX-2,marge,data.colonnes[i-1]).attr({"font-size": "16px"});
 }
 
+//Etiquette and points and lines
 var disEtiquette = disColonne/3-marge;
 for (i = 0; i<nbSeries;i++){
     paper.rect(disEtiquette, lineStart+data.series[i].values[0]*lineLength, 100,30,5).attr({"fill":colour[i]});
     paper.text(disEtiquette+50, lineStart+data.series[i].values[0]*lineLength+15,data.series[i].name).attr({"font-size": "12px"})
-    var pointAvant = `(${disEtiquette+100},${lineStart+data.series[i].values[0]*lineLength+15})`;
+    var pointAvant = `${disEtiquette+100},${lineStart+data.series[i].values[0]*lineLength+15}`;
     for (var j =0; j<nbColonnes;j++){
         X = disColonne*(j+1);
         paper.circle(X,lineStart+data.series[i].values[j]*lineLength,5).attr({fill:colour[i]})
-        var point = `(${X},${lineStart+data.series[i].values[j]*lineLength})`;
-        paper.path('M'+pointAvant+'L'+point);
+        var point = `${X},${lineStart+data.series[i].values[j]*lineLength}`;
+        paper.path('M'+pointAvant+'L'+point).attr({"stroke-width":"2px","stroke":colour[i]});
         pointAvant = point;
     }
     
