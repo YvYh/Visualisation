@@ -1,18 +1,21 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <link rel="stylesheet" href="./leaflet.css"/>
+        <link rel="stylesheet" href="./leaflet/leaflet.css"/>
         <style>
             #map{ width: 1000px; height: 700px; }                
         </style>
-        <script src="./leaflet.js"></script>
+        <script src="./leaflet/leaflet.js"></script>
         </script>  
     </head>
     <body>
     
         <div id="map" class="map" ></div>
+        <button type="button" onclick="polygone()">Polygone</button>
         <script>
-
+            
+            var coordinates = [];
+            
             // Création de la carte (centrée sur les coordonnées de mon bureau :o))
             var map = L.map('map').setView([49.38322140320283, 1.0773038864135744], 17);
 
@@ -32,6 +35,7 @@
             // Affichage des coordonnées dans la console :
             map.on('click', function onMapClick(e) {
                 console.log(e.latlng);
+                coordinates.push([e.latlng.lat, e.latlng.lng]);
             });
 
             // Ajout d'un rectangle pour le CISE
@@ -51,6 +55,12 @@
                 radius: 10 // en mètres
             }).addTo(map);
             bus.bindPopup('Arrêt de bus');
+            
+            console.log(coordinates);
+            
+            function polygone(){
+                var polygon = L.polygon(coordinates, {color:"red"}).addTo(map);
+            }
 
         </script>
     </body>
