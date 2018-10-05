@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="./leaflet.css"/>
+        <style>
+            #map{ width: 1000px; height: 700px; }                
+        </style>
+        <script src="./leaflet.js"></script>
+        </script>  
+    </head>
+    <body>
+    
+        <div id="map" class="map" ></div>
+        <script>
+
+            // Création de la carte (centrée sur les coordonnées de mon bureau :o))
+            var map = L.map('map').setView([49.38322140320283, 1.0773038864135744], 17);
+
+            // Récupération des images de la carte :
+            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            // Ajout d'un premier marker pour la D1-264
+            L.marker([49.38304679201492, 1.0774701833724978]).addTo(map)
+            .bindPopup('Vous êtes ici !')
+            .openPopup(); // Popup ouverte au lancement
+            L.marker([49.38322140320283, 1.0773038864135744]).addTo(map)
+            .bindPopup('Mon bureau')
+            
+
+            // Affichage des coordonnées dans la console :
+            map.on('click', function onMapClick(e) {
+                console.log(e.latlng);
+            });
+
+            // Ajout d'un rectangle pour le CISE
+            var cise = L.polygon([
+                [49.38505478321443, 1.0743105411529543],
+                [49.384827797018694, 1.0741120576858523],
+                [49.38433890011248, 1.0756033658981325],
+                [49.38460080977436, 1.0758286714553835]
+            ]).addTo(map);
+            cise.bindPopup('Le CISE');
+
+            // Ajout d'un arrêt de bus :
+            var bus = L.circle([49.38420270653659, 1.0782051086425783], {
+                color: 'red',
+                fillColor: '#f88',
+                fillOpacity: 0.5,
+                radius: 10 // en mètres
+            }).addTo(map);
+            bus.bindPopup('Arrêt de bus');
+
+        </script>
+    </body>
+</html>
+
+
