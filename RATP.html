@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="./leaflet/leaflet.css"/>
+        <style>
+            #map{ width: 1000px; height: 700px; }                
+        </style>
+        <script src="./leaflet/leaflet.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+    </head>
+    <body>
+    
+        <div id="map" class="map" ></div>
+        <script>
+            
+            var coordinates = [];
+            
+            // Création de la carte (centrée sur les coordonnées de mon bureau :o))
+            var map = L.map('map').setView([48.8614091,2.3401026], 14);
+
+            // Récupération des images de la carte :
+            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            
+            function addStation(d){
+                d.records.forEach(element =>{
+                    stationName = element.fields.station;
+                    var espace =  / /gi;
+                    stationName = stationName.replace(espace,'+');
+                    trafic = element.fields.trafic;
+                    r = Math.round(trafic/1000000);
+
+                    urlStation = `https://data.ratp.fr/api/records/1.0/search/?dataset=positions-geographiques-des-stations-du-reseau-ratp&rows=10000&facet=stop_name&facet=coord&refine.stop_name=${stationName}`;
+                    $.get(urlStation, function(data,status){
+                        data.records.forEach(e =>{
+                            coor = e.fields.coord;
+                            var station = L.circle(coor,{
+                                color: 'red',
+                                fillColor: '#f88',
+                                fillOpacity: 0.5,
+                                radius: r // en mètres
+                            }).addTo(map);
+                            
+                            })                   //console.log([e.fields.stop_name]);     
+                    })                   
+                })
+            }
+            
+            urlTrafic = "https://data.ratp.fr/api/records/1.0/search/?dataset=trafic-annuel-entrant-par-station-du-reseau-ferre-2016&sort=-rang&&rows=10000&facet=reseau&facet=station&facet=ville&facet=arrondissement_pour_paris&refine.ville=Paris";
+                                     
+            $.get(urlTrafic, function(data,status){
+                addStation(data);
+            })                 
+
+            // Affichage des coordonnées dans la console :
+            map.on('click', function onMapClick(e) {
+                console.log(e.latlng);
+                coordinates.push([e.latlng.lat, e.latlng.lng]);
+            });
+            
+
+        </script>
+    </body>
+</html>
+
+
