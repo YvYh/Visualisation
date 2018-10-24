@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Exemple 1 D3 JS</title>
+    <script src="./lib/d3.min.js"></script>
+</head>
+
+<body>
+<p>Un peu de texte</p>
+<p class="bleu">Un second paragraphe</p>
+<p class="bleu">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laboriosam consequuntur, nulla sequi
+    cupiditate, magni quidem modi rem a iusto sed saepe nisi odit explicabo! Eius, dolorem. Fuga ab rerum eius.
+</p>
+<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis veritatis repudiandae commodi ducimus, nisi laudantium nostrum distinctio repellendus architecto error laborum quaerat unde? Provident doloribus rem voluptatibus, officiis earum quasi minima deserunt iure animi quisquam, placeat saepe ullam. Est omnis autem iste commodi rerum tenetur, sunt recusandae sapiente eveniet praesentium, asperiores cupiditate necessitatibus deserunt officia qui delectus ex enim corporis earum, ullam obcaecati. Dolorum, sapiente deleniti maxime unde ipsam quas aliquam obcaecati natus odit, laudantium quam nam velit illo placeat reprehenderit eveniet debitis aliquid accusantium quibusdam cumque quod neque. Provident sed ipsa rerum deleniti pariatur cum magnam accusamus esse quo!
+</p>
+<p>You win!</p>
+
+<script>
+    d3.selectAll('p.bleu')
+        .transition()
+        .duration(4000)
+        .style('color', 'blue');
+
+    let tab = d3.selectAll('p').nodes();
+    d3.select(tab[4])
+        .style('color', 'green')
+        .style('text-align', 'center')
+        .style('font-size', '0px')
+        .transition()
+        .ease(d3.easeElastic)
+        .duration(5000)
+        .style('font-size', '128px')
+
+
+</script>
+
+
+
+</body>
+
+</html>
